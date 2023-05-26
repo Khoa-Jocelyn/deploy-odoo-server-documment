@@ -8,5 +8,5 @@ cd /etc/systemd/system/
 sudo nano odoo.service
 ```
 
-### Step 3: Copy content in [odoo.service]() file
+### Step 3: Copy content in [odoo.service](./odoo.service) file
 Enter command `Ctrl + S` to save file -> command `Ctrl + X` to close nano.
