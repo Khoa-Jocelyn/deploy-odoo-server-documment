@@ -11,7 +11,7 @@ sudo rm -rf default
 
 sudo nano nginx.conf
 ```
-Copy content in [nginx.conf]() file and enter command `Ctrl + S` to save file -> command `Ctrl + X` to close nano.
+Copy content in [nginx.conf](./nginx.conf) file and enter command `Ctrl + S` to save file -> command `Ctrl + X` to close nano.
 
 
 ### Step 3: Copy nginx.conf from /etc/nginx/sites-available/nginx.conf to /etc/nginx/sites-enabled/nginx.conf
