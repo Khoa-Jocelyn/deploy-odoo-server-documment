@@ -13,41 +13,41 @@ OpenSSH is an open source software that implements SSH protocol on Linux. OpenSS
 OpenSSH can use many authentication methods, including plain password or public key.
 
 ### 1.1, SSH In Server
-*Install SSHD service on server if not installed yet*
+**Install SSHD service on server if not installed yet**
 
 ```
 sudo apt install openssh-server
 ```
 
-*To start SSHD*
+**To start SSHD**
 
 ```
 sudo systemctl start sshd
 ```
 
-*To stop SSHD*
+**To stop SSHD**
 
 ```
 sudo systemctl stop sshd
 ```
 
-*To restart SSHD*
+**To restart SSHD**
 
 ```
 sudo systemctl restart sshd
 ```
 
-*To view status of SSHD*
+**To view status of SSHD**
 
 `sudo systemctl status sshd`
 
-*Configuration SSHD*
+**Configuration SSHD**
 
-- To configure SSHD
-+ Step 1: Edit file /etc/ssh/sshd_config
-+ Step 2: Restart SSHD `sudo systemctl restart sshd`
+*To configure SSHD*
+- Step 1: Edit file /etc/ssh/sshd_config
+- Step 2: Restart SSHD `sudo systemctl restart sshd`
 
-- Some common configs:
-+ Port: default to 22, change to listen client connections on another port.
+*Some common configs:*
+- Port: default to 22, change to listen client connections on another port.
 
 
