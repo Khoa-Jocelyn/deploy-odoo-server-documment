@@ -39,7 +39,9 @@ sudo systemctl restart sshd
 
 **To view status of SSHD**
 
-`sudo systemctl status sshd`
+```
+sudo systemctl status sshd
+```
 
 **Configuration SSHD**
 
