@@ -1,4 +1,4 @@
-#Steps To Deploy Odoo Server#
+# Steps To Deploy Odoo Server
 
 Here are the steps to deploy the most basic Odoo Server system
 
