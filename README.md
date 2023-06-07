@@ -209,7 +209,7 @@ sudo nano /opt/odoo/odoo14.conf
 
 ```
 [options]
-proxy_mode = True
+addons_path = /opt/odoo/odoo14/addons
 admin_passwd = mysupersecretpassword
 db_host = localhost
 db_port = 5432
@@ -223,6 +223,8 @@ limit_time_cpu = 600
 limit_time_real = 1200
 max_cron_threads = 1
 workers = 8
+proxy_mode = True
+logfile = /var/log/odoo/odoo.log
 ```
 *Enter command `Ctrl + S` to save -> command `Ctrl + X` to close nano.*
 
@@ -483,7 +485,7 @@ server {
   ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
   ssl_prefer_server_ciphers off;
 
-  # log
+  # Log
   access_log /var/log/nginx/odoo.access.log;
   error_log /var/log/nginx/odoo.error.log;
 
