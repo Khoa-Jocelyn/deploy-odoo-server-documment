@@ -2,7 +2,7 @@
 
 Here are the steps to deploy the most basic Odoo Server system
 
-## 1 Setups SSH For Server
+## 1 - Setups SSH For Server
 
 SSH is a standard protocol to control a remote machine over network. We use SSH to execute commands on servers also to transfer file to/from servers.
 
@@ -13,7 +13,7 @@ SSH is a standard protocol to control a remote machine over network. We use SSH 
 
 *OpenSSH can use many authentication methods, including plain password or public key.*
 
-### 1.1 SSH Server
+### 1.1 - SSH Server
 
 *Install SSHD service on server if not installed yet*
 
@@ -53,7 +53,7 @@ sudo systemctl status sshd
 
 - Port: default to 22, change to listen client connections on another port.
 
-### 1.2 SSH Client
+### 1.2 - SSH Client
 
 **B - Install ssh client tools if not installed**
 
@@ -95,7 +95,7 @@ To deploy the public key to server, do one of two methods:
 - Method 1: Manually append content of the `id_rsa.pub` file to the file `~/.ssh/authorized_keys` on server.
 - Method 2: Execute command: `ssh-copy-id {username}@{server-ip} -i {path-to-public-key}`. This method requires a working ssh connection before (e.g. using password authentication).
 
-## 2 Setup SSH Key To Clone/Pull Code From Git Repositories.
+## 2 - Setup SSH Key To Clone/Pull Code From Git Repositories.
 
 **Step 1: Generate a new ssh key**
 - Follow section [1.2/Connect from client to server/Step 1](generate the ssh keys)
@@ -103,9 +103,9 @@ To deploy the public key to server, do one of two methods:
 **Step 2: Add ssh key to git**
 - [Add ssh key to your git account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 
-## 3 Setup Servers
+## 3 - Setup Servers
 
-### 3.1 Setup Odoo Server
+### 3.1 - Setup Odoo Server
 
 **Step 1: Install requirements for the backup/restore/kill process feature**
 
