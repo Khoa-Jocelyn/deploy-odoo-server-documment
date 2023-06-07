@@ -71,7 +71,7 @@ sudo apt install openssh-client
 
 SSH allow authentication between two hosts without the need of a password. SSH key authentication uses a private key and a public key.
 
-**Step 1: [generate the ssh keys](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)**
+**Step 1: [Generate the ssh keys](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)**
 
 *From a terminal prompt enter:*
 
@@ -86,14 +86,14 @@ ssh-keygen -t rsa -m PEM
 
 *During the process you will be prompted for a passphrase. You can hit Enter when prompted to create keys without passphrase.*
 
-*By default, the public key is saved in the file ~/.ssh/id_rsa.pub, while ~/.ssh/id_rsa is the private key. The public key needs to be deployed to the server where client want to connect to.*
+*By default, the public key is saved in the file `~/.ssh/id_rsa.pub`, while `~/.ssh/id_rsa` is the private key. The public key needs to be deployed to the server where client want to connect to.*
 
-**Step 2: deploy the public key to server**
+**Step 2: Deploy the public key to server**
 
 To deploy the public key to server, do one of two methods:
 
-- Method 1: Manually append content of the id_rsa.pub file to the file ~/.ssh/authorized_keys on server.
-- Method 2: Execute command: ssh-copy-id {username}@{server-ip} -i {path-to-public-key}. This method requires a working ssh connection before (e.g. using password authentication).
+- Method 1: Manually append content of the `id_rsa.pub` file to the file `~/.ssh/authorized_keys` on server.
+- Method 2: Execute command: `ssh-copy-id {username}@{server-ip} -i {path-to-public-key}`. This method requires a working ssh connection before (e.g. using password authentication).
 
 ## 2 Setup SSH Key To Clone/Pull Code From Git Repositories.
 
