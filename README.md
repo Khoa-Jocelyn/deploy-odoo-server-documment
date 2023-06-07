@@ -237,7 +237,7 @@ systemctl daemon-reload
 systemctl enable --now odoo14
 ```
 
-### 3.2 PostgreSQL Server
+### 3.2 - PostgreSQL Server
 
 **Step 1: Install PostgreSQL on the physical server used for database**
 
@@ -315,7 +315,7 @@ sudo systemctl reload postgresql
 sudo apt install zip unzip gzip pv
 ```
 
-### 3.3 Nginx Server
+### 3.3 - Nginx Server
 
 **Step 1: Install nginx on the physical server used for proxy**
 
@@ -439,7 +439,7 @@ sudo systemctl start nginx
 sudo systemctl enable nginx
 ```
 
-### 3.4 DNS Server
+### 3.4 - DNS Server
 
 **Step 1: Install bind9 on the physical server used for DNS**
 
