@@ -196,6 +196,9 @@ StandardOutput=journal+console
 [Install]
 WantedBy=multi-user.target
 ```
+
+*Enter command `Ctrl + S` to save -> command `Ctrl + X` to close nano.*
+
 *Create odoo14.conf file:*
 
 ```
@@ -220,6 +223,8 @@ limit_time_real = 1200
 max_cron_threads = 1
 workers = 8
 ```
+*Enter command `Ctrl + S` to save -> command `Ctrl + X` to close nano.*
+
 *Reload systemd config:*
 
 ```
@@ -353,6 +358,7 @@ bash <(curl -f -L -sS https://ngxpagespeed.com/install) --nginx-version latest
 >
 > ```
 > tar xvf psol-focal.tar.xz
+>
 > tar zxvf nginx-1.22.0.tar.gz
 > ```
 >
@@ -417,6 +423,7 @@ KillMode=mixed
 [Install]
 WantedBy=multi-user.target
 ```
+*Enter command `Ctrl + S` to save -> command `Ctrl + X` to close nano.*
 
 *Start the nginx service:*
 
