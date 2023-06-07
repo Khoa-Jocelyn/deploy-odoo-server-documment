@@ -209,6 +209,7 @@ sudo nano /opt/odoo/odoo14.conf
 
 ```
 [options]
+proxy_mode = True
 admin_passwd = mysupersecretpassword
 db_host = localhost
 db_port = 5432
@@ -386,13 +387,13 @@ bash <(curl -f -L -sS https://ngxpagespeed.com/install) --nginx-version latest
 > make install
 > ```
 
-*Create a new user to run nginx service:*
+**Step 2: Create a new user to run nginx service**
 
 ```
 sudo adduser --system --no-create-home --group nginx
 ```
 
-*Create the following two directories if they don't exist:*
+**Step 3: Create the following two directories if they don't exist**
 
 ```
 sudo mkdir -p /var/log/nginx && sudo chown nginx:nginx /var/log/nginx
@@ -400,7 +401,7 @@ sudo mkdir -p /var/log/nginx && sudo chown nginx:nginx /var/log/nginx
 sudo mkdir -p /var/lib/nginx && sudo chown nginx:nginx /var/lib/nginx
 ```
 
-*Create a new nginx service to manage via `systemctl` commands:*
+**Step 4: Create a new nginx service to manage via `systemctl` commands**
 
 ```
 sudo nano /lib/systemd/system/nginx.service
@@ -437,6 +438,100 @@ sudo systemctl start nginx
 
 ```
 sudo systemctl enable nginx
+```
+
+**Step 5: Create nginx config file**
+
+```
+sudo nano /etc/nginx/sites-enabled/nginx-odoo.conf
+```
+
+*Copy content to nano windown:*
+
+```
+# Odoo server
+upstream odoo {
+  server 127.0.0.1:8069;
+}
+upstream odoochat {
+  server 127.0.0.1:8072;
+}
+map $http_upgrade $connection_upgrade {
+  default upgrade;
+  ''      close;
+}
+
+# http -> https
+server {
+  listen 80;
+  server_name odoo.mycompany.com; # Replace odoo.mycompany.com with your server name
+  rewrite ^(.*) https://$host$1 permanent;
+}
+
+server {
+  listen 443 ssl;
+  server_name odoo.mycompany.com;
+  proxy_read_timeout 720s;
+  proxy_connect_timeout 720s;
+  proxy_send_timeout 720s;
+
+  # SSL parameters
+  ssl_certificate /etc/ssl/nginx/server.crt;
+  ssl_certificate_key /etc/ssl/nginx/server.key;
+  ssl_session_timeout 30m;
+  ssl_protocols TLSv1.2;
+  ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+  ssl_prefer_server_ciphers off;
+
+  # log
+  access_log /var/log/nginx/odoo.access.log;
+  error_log /var/log/nginx/odoo.error.log;
+
+  # Redirect websocket requests to odoo gevent port
+  location /websocket {
+    proxy_pass http://odoochat;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Real-IP $remote_addr;
+  }
+
+  # Redirect requests to odoo backend server
+  location / {
+    # Add Headers for odoo proxy mode
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_redirect off;
+    proxy_pass http://odoo;
+  }
+
+  # common gzip
+  gzip_types text/css text/scss text/plain text/xml application/xml application/json application/javascript;
+  gzip on;
+}
+```
+
+*Test nginx config:*
+
+```
+sudo nginx -t
+```
+
+*Note: If the terminal displays the following message, then it is successful*
+
+```
+nginx: the configuration file /etc/nginx/nginx-odoo.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx-odoo.conf test is successful
+```
+
+*Restart nginx sevice:*
+ 
+```
+sudo systemctl start nginx
 ```
 
 ### 3.4 - DNS Server
