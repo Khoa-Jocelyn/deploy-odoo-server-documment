@@ -315,7 +315,7 @@ sudo systemctl reload postgresql
 sudo apt install zip unzip gzip pv
 ```
 
-### Nginx Server
+### 3.3 Nginx Server
 
 **Step 1: Install nginx on the physical server used for proxy**
 
@@ -411,6 +411,7 @@ sudo nano /lib/systemd/system/nginx.service
 ```
 Description=The NGINX HTTP and reverse proxy server
 After=syslog.target network.target remote-fs.target nss-lookup.target
+
 [Service]
 Type=forking
 PIDFile=/run/nginx.pid
@@ -420,6 +421,7 @@ ExecReload=/usr/local/nginx/sbin/nginx -g 'daemon on; master_process on;' -s rel
 ExecStop=-/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/nginx.pid
 TimeoutStopSec=5
 KillMode=mixed
+
 [Install]
 WantedBy=multi-user.target
 ```
@@ -437,3 +439,33 @@ sudo systemctl start nginx
 sudo systemctl enable nginx
 ```
 
+### 3.4 DNS Server
+
+**Step 1: Install bind9 on the physical server used for DNS**
+
+```
+sudo apt install bind9
+```
+
+On local environment, to access Odoo instances via its domain name, you need to setup DNS nameservers in your host OS (not guest OS in virtual machines):
+
+*Install the resolvconf package if it's not already installed:*
+
+```
+sudo apt install resolvconf
+```
+
+*Open the file `/etc/resolvconf/resolv.conf.d/head` and insert the following lines:*
+
+```
+# Replace x.x.x.x with the IP address of the DNS server.
+nameserver x.x.x.x
+```
+
+*Restart resolvconf and systemd-resolved services:*
+
+```
+sudo systemctl restart resolvconf && sudo systemctl restart systemd-resolved
+```
+
+*To verify if the above setup is successful, open the file `/etc/resolv.conf` and check if there is nameserver x.x.x.x in there.*
