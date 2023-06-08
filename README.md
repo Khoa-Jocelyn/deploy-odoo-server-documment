@@ -322,72 +322,10 @@ sudo apt install zip unzip gzip pv
 
 **Step 1: Install nginx on the physical server used for proxy**
 
-*Because we need PageSpeed module, we need to install nginx from source:*
-
+*Install Nginx:*
 ```
-sudo apt install build-essential libssl-dev libpcre3 libpcre3-dev libxml2-dev libxslt1-dev libgd-dev libgeoip-dev libperl-dev curl
+sudo apt install nginx -y
 ```
-
-*Install nginx:*
-
-```
-bash <(curl -f -L -sS https://ngxpagespeed.com/install) --nginx-version latest
-```
-
-*When asked, input the following params:*
-
-```
---prefix=/usr/local/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-client-body-temp-path=/var/lib/nginx/body --http-fastcgi-temp-path=/var/lib/nginx/fastcgi --http-log-path=/var/log/nginx/access.log --http-proxy-temp-path=/var/lib/nginx/proxy --http-scgi-temp-path=/var/lib/nginx/scgi --http-uwsgi-temp-path=/var/lib/nginx/uwsgi --lock-path=/var/lock/nginx.lock --pid-path=/run/nginx.pid --user=nginx --group=nginx --with-pcre-jit --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-http_auth_request_module --with-http_addition_module --with-http_dav_module --with-http_geoip_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_image_filter_module --with-http_v2_module --with-http_sub_module --with-http_xslt_module --with-stream --with-stream_ssl_module --with-file-aio --with-mail --with-mail_ssl_module --with-threads
-```
-
-**Warning**
-*If you encounter error when building nginx on Ubuntu 20.04 or above, try to install Nginx and Pagespeed manually by following these instructions:*
-
-> *First, download the Nginx source code and the PSOL pre-built library:*
->
-> ```
-> wget https://nginx.org/download/nginx-1.22.0.tar.gz
-> ```
->
-> (or you can replace 1.22.0 by the newest version)
->
-> ```
-> wget http://www.tiredofit.nl/psol-focal.tar.xz
-> ```
->
-> (or you can replace focal with the code of your ubuntu version, eg: jammy for Ubuntu 22.04...)
->
-> *Extract the downloaded files:*
->
-> ```
-> tar xvf psol-focal.tar.xz
->
-> tar zxvf nginx-1.22.0.tar.gz
-> ```
->
-> *Clone the source code of Pagespeed module:*
->
-> ```
-> git clone --depth=1 https://github.com/apache/incubator-pagespeed-ngx.git
-> ```
->
-> *Move the extracted psol into Pagespeed directory:*
->
-> ```
-> mv psol incubator-pagespeed-ngx
-> ```
->
-> *Finally, configure and install Nginx:*
->
->```
-> cd nginx-1.22.0
->
-> ./configure --prefix=/usr/local/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-client-body-temp-path=/var/lib/nginx/body --http-fastcgi-temp-path=var/lib/nginx/fastcgi --http-log-path=/var/log/nginx/access.log --http-proxy-temp-path=/var/lib/nginx/proxy --http-scgi-temp-path=/var/lib/nginx/scgi --http-uwsgi-temp-path=/var/lib/nginx/uwsgi --lock path=/var/lock/nginx.lock --pid-path=/run/nginx.pid --user=nginx --group=nginx --with-pcre-jit --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-http_auth_request_module --with-http_addition_module --with-http_dav_module --with-http_geoip_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_image_filter_module --with-http_v2_module --with-http_sub_module --with-http_xslt_module --with-stream --with-stream_ssl_module --with-file-aio --with-mail --with-mail_ssl_module --with-threads --add-module=../incubator-pagespeed-ngx
->
-> make -j4
->
-> make install
-> ```
 
 **Step 2: Create a new user to run nginx service**
 
@@ -444,7 +382,10 @@ sudo systemctl enable nginx
 
 **Step 5: Create nginx config file**
 
+
 ```
+sudo rm -rf /etc/nginx/sites-available/default
+
 sudo nano /etc/nginx/sites-enabled/nginx-odoo.conf
 ```
 
@@ -517,6 +458,12 @@ server {
 }
 ```
 
+*Copy nginx.conf from `/etc/nginx/sites-available/nginx.conf` to `/etc/nginx/sites-enabled/nginx.conf`:*
+
+```
+sudo ln -s /etc/nginx/sites-available/odoo.conf /etc/nginx/sites-enabled/odoo.conf
+```
+
 *Test nginx config:*
 
 ```
@@ -566,3 +513,10 @@ sudo systemctl restart resolvconf && sudo systemctl restart systemd-resolved
 ```
 
 *To verify if the above setup is successful, open the file `/etc/resolv.conf` and check if there is nameserver x.x.x.x in there.*
+
+### 3.5 - SSL Config
+
+*Reference:*
+
+- https://cipherlist.eu/
+- https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
