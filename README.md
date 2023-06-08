@@ -115,11 +115,25 @@ sudo apt install zip unzip pv psmisc
 
 **Step 2: Create system user and group odoo**
 
+*Create user odoo and goup odoo:*
+
 ```
 sudo adduser --system --home=/opt/odoo --disabled-login --disabled-password --group odoo
 ```
 
-*Replace /opt/odoo with the path where you intend to put Odoo and custom addons repositories.*
+*Note:* Replace /opt/odoo with the path where you intend to put Odoo and custom addons repositories.
+
+*Allow odoo and goup users to access the `/opt/odoo` . directory:*
+
+```
+sudo chown odoo:odoo /opt/odoo/
+```
+
+*Switch to user odoo:*
+
+```
+sudo -iu odoo
+```
 
 **Step 3: Install multiple Python versions to support multiple Odoo versions**
 
@@ -227,6 +241,12 @@ proxy_mode = True
 logfile = /var/log/odoo/odoo.log
 ```
 *Enter command `Ctrl + S` to save -> command `Ctrl + X` to close nano.*
+
+*Create dir to save log for odoo service:*
+
+```
+sudo mkdir /var/log/odoo
+```
 
 *Reload systemd config:*
 
